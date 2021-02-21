@@ -23,24 +23,25 @@ Navigate to http://localhost:3000 to verify that your server is running.
 
 ## Accessing Database
 
-Currently to simplify the database access process, the application is using sqlite, an SQL database engine. For now, this is will efficiently test our basic logic. In the future we will transition to using Postgres by changing the connections under [env.js](https://github.com/SirFancyWalrus/DogGo/blob/master/database/config/env.js). Since both use SQL, we would not need to change any other details in our program. To view the contents and tables within the database after deployment, navigate to the project directory and execute
+Currently the database connections are to CockroachCloud's cluster. The certificate as well as connection parameters are stored in the /database/config directory. To download the CRDB client, use:
+
+**For Mac**
 ```
-sqlite3 db.sqlite
+curl https://binaries.cockroachdb.com/cockroach-v20.2.4.darwin-10.9-amd64.tgz | tar -xJ; cp -i cockroach-v20.2.4.darwin-10.9-amd64/cockroach /usr/local/bin/
 ```
-To view all tables
+**For Linux**
 ```
-.tables
+wget -qO- https://binaries.cockroachdb.com/cockroach-v20.2.4.linux-amd64.tgz | tar xvz; cp -i cockroach-v20.2.4.linux-amd64/cockroach /usr/local/bin/
 ```
-To view all seeded values in the table
+**For Windows:** [Instructions](https://www.cockroachlabs.com/docs/v20.2/install-cockroachdb-windows?_ga=2.143609845.1382161654.1613844948-869747237.1613844948#download-the-executable)
+
+To connect from Terminal, execute the following
+
 ```
-select * from users;
-```
-To exit
-```
-.exit
+cockroach sql --url 'postgres://cindy@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=<your_certs_directory>/cc-ca.crt&options=--cluster=honk-bonk-830'
 ```
 
 
 ## Test Cases
 
-TODO
+The curl commands and other relevant testing strategies are commented above each service. 
